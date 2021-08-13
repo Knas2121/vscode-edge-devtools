@@ -17,7 +17,7 @@ import {
 } from './common/webviewEvents';
 import { JsDebugProxyPanelSocket } from './JsDebugProxyPanelSocket';
 import { PanelSocket } from './panelSocket';
-import { BrowserVerisonDetectionSocket } from './versionSocketConnection';
+import { BrowserVersionDetectionSocket } from './versionSocketConnection';
 import {
     applyPathMapping,
     fetchUri,
@@ -38,7 +38,7 @@ export class DevToolsPanel {
     private readonly telemetryReporter: Readonly<TelemetryReporter>;
     private readonly targetUrl: string;
     private panelSocket: PanelSocket;
-    private versionDetectionSocket: BrowserVerisonDetectionSocket;
+    private versionDetectionSocket: BrowserVersionDetectionSocket;
     private consoleOutput: vscode.OutputChannel;
     private timeStart: number | null;
 
@@ -96,7 +96,7 @@ export class DevToolsPanel {
         // This Websocket is only used on initial connection to determine the browser version.
         // The browser version is used to select between CDN and bundled tools
         // Future versions of the extension will remove this socket and only use CDN
-        this.versionDetectionSocket = new BrowserVerisonDetectionSocket(this.targetUrl);
+        this.versionDetectionSocket = new BrowserVersionDetectionSocket(this.targetUrl);
         this.versionDetectionSocket.on('setBrowserRevision', revision => this.setBrowserRevision(revision));
 
 

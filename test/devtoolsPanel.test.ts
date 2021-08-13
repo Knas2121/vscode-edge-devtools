@@ -18,7 +18,7 @@ import {
     Writable,
 } from "./helpers/helpers";
 import { IRuntimeConfig, SETTINGS_PREF_DEFAULTS, SETTINGS_PREF_NAME } from "../src/utils";
-import { BrowserVerisonDetectionSocket } from "../src/versionSocketConnection";
+import { BrowserVersionDetectionSocket } from "../src/versionSocketConnection";
 
 jest.mock("vscode", () => createFakeVSCode(), { virtual: true });
 
@@ -30,8 +30,8 @@ describe("devtoolsPanel", () => {
     let mockPanelSocketFactory: { PanelSocket: jest.Mock };
     let mockJsDebugProxyPanelSocket: Mocked<JsDebugProxyPanelSocket>;
     let mockJsDebugProxyPanelSocketFactory: { JsDebugProxyPanelSocket: jest.Mock };
-    let mockVersionDetectionSocket: Mocked<BrowserVerisonDetectionSocket>;
-    let mockVersionDetectionSocketFactory: { BrowserVerisonDetectionSocket: jest.Mock };
+    let mockVersionDetectionSocket: Mocked<BrowserVersionDetectionSocket>;
+    let mockVersionDetectionSocketFactory: { BrowserVersionDetectionSocket: jest.Mock };
     let mockWebviewEvents: { encodeMessageForChannel: jest.Mock };
     let mockRuntimeConfig: IRuntimeConfig;
 
@@ -89,10 +89,10 @@ describe("devtoolsPanel", () => {
             dispose: jest.fn(),
             on: jest.fn(),
             detectVersion: jest.fn(),
-        } as Mocked<BrowserVerisonDetectionSocket>;
+        } as Mocked<BrowserVersionDetectionSocket>;
 
         mockVersionDetectionSocketFactory = {
-            BrowserVerisonDetectionSocket: jest.fn(() => mockVersionDetectionSocket),
+            BrowserVersionDetectionSocket: jest.fn(() => mockVersionDetectionSocket),
         };
         jest.doMock("../src/versionSocketConnection", () => mockVersionDetectionSocketFactory);
 

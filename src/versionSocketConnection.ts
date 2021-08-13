@@ -27,7 +27,7 @@ const MIN_SUPPORTED_BROWSER: BrowserVersion = {
     revision : '',
 };
 
-export class BrowserVerisonDetectionSocket extends EventEmitter {
+export class BrowserVersionDetectionSocket extends EventEmitter {
     private readonly targetUrl: string;
     private socket: WebSocket | undefined;
 
