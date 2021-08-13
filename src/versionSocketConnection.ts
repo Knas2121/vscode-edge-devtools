@@ -74,7 +74,8 @@ export class BrowserVersionDetectionSocket extends EventEmitter {
             // Loop through from Major to minor numbers
             if (currentVersion[i] > minSupportedVersion[i]) {
                 return currentRevision;
-            } else if (currentVersion[i] < minSupportedVersion[i]) {
+            }
+            if (currentVersion[i] < minSupportedVersion[i]) {
                 return '';
             }
             // Continue to the next number
