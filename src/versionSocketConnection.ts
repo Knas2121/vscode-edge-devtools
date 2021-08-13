@@ -15,17 +15,7 @@ export interface BrowserVersionCdpResponse {
    }
 }
 
-export interface BrowserVersion {
-    major: number;
-    minor: number;
-    revision: string;
-}
-
-const MIN_SUPPORTED_BROWSER: BrowserVersion = {
-    major: 94,
-    minor: 975,
-    revision : '',
-};
+const MIN_SUPPORTED_VERSION = '94.0.975.0';
 
 export class BrowserVersionDetectionSocket extends EventEmitter {
     private readonly targetUrl: string;
@@ -75,17 +65,21 @@ export class BrowserVersionDetectionSocket extends EventEmitter {
         if (data.id !== 0 || !data.result || !data.result.product && !data.result.revision) {
             return '';
         }
-        // product in the form Edg/Major.0.Minor.0 or HeadlessEdg/Major.0.Minor.0
+        // product in the form [Edg, HeadlessEdg]/#.#.#.#
         const versionNum = (data.result.product as string).split('/')[1];
-        const parts = versionNum.split('.');
-        const currVersion: BrowserVersion = {
-            major: parseInt(parts[0], 10),
-            minor: parseInt(parts[2], 10),
-            revision: data.result.revision || '',
-        };
-        if (currVersion.major > MIN_SUPPORTED_BROWSER.major || (currVersion.major === MIN_SUPPORTED_BROWSER.major && currVersion.minor >= MIN_SUPPORTED_BROWSER.minor)) {
-            return currVersion.revision;
+        const currentVersion = versionNum.split('.');
+        const minSupportedVersion = MIN_SUPPORTED_VERSION;
+        const currentRevision = data.result.revision || '';
+        for (let i = 0; i < currentVersion.length; i++) {
+            // Loop through from Major to minor numbers
+            if (currentVersion[i] > minSupportedVersion[i]) {
+                return currentRevision;
+            } else if (currentVersion[i] < minSupportedVersion[i]) {
+                return '';
+            }
+            // Continue to the next number
         }
-        return '';
+        // All numbers matched, return supported revision
+        return currentRevision;
     }
 }
